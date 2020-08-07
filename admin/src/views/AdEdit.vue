@@ -19,9 +19,11 @@
             <el-form-item label="跳转链接 （URL）">
               <el-input v-model="item.url"></el-input>
             </el-form-item>
-            <el-form-item label="图片" style="margin-top:0.5rem;">
+            <el-form-item label="图片"
+                          style="margin-top:0.5rem;">
               <el-upload class="avatar-uploader"
-                         :action="$http.defaults.baseURL + '/upload'"
+                         :action="uploadUrl"
+                         :headers="getAuthHeaders()"
                          :show-file-list="false"
                          :on-success="res => $set(item,'image',res.url)">
                 <img v-if="item.image"
@@ -59,7 +61,7 @@ export default {
   data () {
     return {
       model: {
-        items:[]
+        items: []
       },
     }
   },
@@ -80,7 +82,7 @@ export default {
     },
     async fetch () {
       const res = await this.$http.get(`rest/ads/${this.id}`)
-      this.model = Object.assign({},this.model,res.data)
+      this.model = Object.assign({}, this.model, res.data)
     },
   },
 }
